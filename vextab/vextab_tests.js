@@ -265,7 +265,7 @@ Vex.Flow.Test.VexTab.notationOnly = function() {
 }
 
 Vex.Flow.Test.VexTab.tuning = function() {
-  expect(9);
+  expect(5);
   var tab = new Vex.Flow.VexTab();
 
   tab.parse("tabstave tuning=E/5,B/4,G/4,D/4,A/3,E/3");
