@@ -269,7 +269,8 @@ Vex.Flow.Stave.prototype.draw = function(context) {
     this.context.fillText("" + this.measure, this.x - text_width / 2, y);
     this.context.restore();
   }
-
+  
+  this.barXShift = bar_x_shift;
   return this;
 }
 
