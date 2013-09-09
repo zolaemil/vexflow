@@ -270,7 +270,7 @@ Vex.Flow.Stave.prototype.draw = function(context) {
     this.context.restore();
   }
   
-  this.barXShift = bar_x_shift;
+  this.bar_x_shift = bar_x_shift;
   return this;
 }
 
