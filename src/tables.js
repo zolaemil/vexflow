@@ -12,7 +12,7 @@ Vex.Flow.clefProperties = function(clef) {
   if (!props) throw new Vex.RERR("BadArgument", "Invalid clef: " + clef);
 
   return props;
-}
+};
 
 Vex.Flow.clefProperties.values = {
   'treble':  { line_shift: 0 },
@@ -49,8 +49,8 @@ Vex.Flow.keyProperties = function(key, clef) {
 
   var stroke = 0;
 
-  if (line <= 0 && (((line * 2) % 2) == 0)) stroke = 1;  // stroke up
-  if (line >= 6 && (((line * 2) % 2) == 0)) stroke = -1; // stroke down
+  if (line <= 0 && (((line * 2) % 2) === 0)) stroke = 1;  // stroke up
+  if (line >= 6 && (((line * 2) % 2) === 0)) stroke = -1; // stroke down
 
   // Integer value for note arithmetic.
   var int_value = (typeof(value.int_val)!='undefined') ? (o * 12) +
@@ -132,7 +132,7 @@ Vex.Flow.keyProperties.note_values = {
     code: "v3e",
     shift_right: 5.5
   }
-}
+};
 
 Vex.Flow.keyProperties.note_glyph = {
   /* Diamond */
@@ -152,7 +152,7 @@ Vex.Flow.keyProperties.note_glyph = {
   'X1':  { code: "v95", shift_right: -0.5 },
   'X2':  { code: "v7f", shift_right: 0.5 },
   'X3':  { code: "v3b", shift_right: -2 }
-}
+};
 
 Vex.Flow.integerToNote = function(integer) {
   if (typeof(integer) == "undefined")
@@ -168,7 +168,7 @@ Vex.Flow.integerToNote = function(integer) {
         integer);
 
   return noteValue;
-}
+};
 
 Vex.Flow.integerToNote.table = {
   0: "C",
@@ -209,109 +209,122 @@ Vex.Flow.tabToGlyph = function(fret) {
 
 Vex.Flow.textWidth = function(text) {
   return 6 * text.toString().length;
-}
+};
 
 Vex.Flow.articulationCodes = function(artic) {
   return Vex.Flow.articulationCodes.articulations[artic];
-}
+};
 
 Vex.Flow.articulationCodes.articulations = {
-  "a.": {   // Stacato
+  "a.": {   // Staccato
     code: "v23",
     width: 4,
     shift_right: -2,
-    shift_up: 0,
-    shift_down: 0
+    shift_up: 8,
+    shift_down: 0,
+    between_lines: true
   },
   "av": {   // Staccatissimo
     code: "v28",
     width: 4,
     shift_right: 0,
-    shift_up: 2,
-    shift_down: 5
+    shift_up: 11,
+    shift_down: 5,
+    between_lines: true
   },
   "a>": {   // Accent
     code: "v42",
     width: 10,
     shift_right: 5,
-    shift_up: -2,
-    shift_down: 2
+    shift_up: 8,
+    shift_down: 1,
+    between_lines: true
   },
   "a-": {   // Tenuto
     code: "v25",
     width: 9,
     shift_right: -4,
-    shift_up: 8,
-    shift_down: 10
+    shift_up: 17,
+    shift_down: 10,
+    between_lines: true
   },
   "a^": {   // Marcato
     code: "va",
     width: 8,
     shift_right: 0,
-    shift_up: -10,
-    shift_down: -1
+    shift_up: -4,
+    shift_down: -2,
+    between_lines: false
   },
   "a+": {   // Left hand pizzicato
     code: "v8b",
     width: 9,
     shift_right: -4,
-    shift_up: 6,
-    shift_down: 12
+    shift_up: 12,
+    shift_down: 12,
+    between_lines: false
   },
   "ao": {   // Snap pizzicato
     code: "v94",
     width: 8,
     shift_right: 0,
     shift_up: -4,
-    shift_down: 4
+    shift_down: 6,
+    between_lines: false
   },
   "ah": {   // Natural harmonic or open note
     code: "vb9",
     width: 7,
     shift_right: 0,
     shift_up: -4,
-    shift_down: 4
+    shift_down: 4,
+    between_lines: false
   },
   "a@a": {   // Fermata above staff
     code: "v43",
     width: 25,
     shift_right: 0,
-    shift_up: 5,
-    shift_down: 0
+    shift_up: 8,
+    shift_down: 10,
+    between_lines: false
   },
   "a@u": {   // Fermata below staff
     code: "v5b",
     width: 25,
     shift_right: 0,
     shift_up: 0,
-    shift_down: -3
+    shift_down: -4,
+    between_lines: false
   },
   "a|": {   // Bow up - up stroke
     code: "v75",
     width: 8,
     shift_right: 0,
-    shift_up: 0,
-    shift_down: 11
+    shift_up: 8,
+    shift_down: 10,
+    between_lines: false
   },
   "am": {   // Bow down - down stroke
     code: "v97",
     width: 13,
     shift_right: 0,
-    shift_up: 0,
-    shift_down: 14
+    shift_up: 10,
+    shift_down: 12,
+    between_lines: false
   },
   "a,": {   // Choked
     code: "vb3",
     width: 6,
     shift_right: 8,
     shift_up: -4,
-    shift_down: 4
+    shift_down: 4,
+    between_lines: false
   }
 };
 
 Vex.Flow.accidentalCodes = function(acc) {
   return Vex.Flow.accidentalCodes.accidentals[acc];
-}
+};
 
 Vex.Flow.accidentalCodes.accidentals = {
   "#": {
@@ -361,7 +374,7 @@ Vex.Flow.accidentalCodes.accidentals = {
 Vex.Flow.keySignature = function(spec) {
   var keySpec = Vex.Flow.keySignature.keySpecs[spec];
 
-  if (keySpec == undefined) {
+  if (!keySpec) {
     throw new Vex.RERR("BadKeySignature",
         "Bad key signature spec: '" + spec + "'");
   }
@@ -373,14 +386,14 @@ Vex.Flow.keySignature = function(spec) {
   var code = Vex.Flow.accidentalCodes.accidentals[keySpec.acc].code;
   var notes = Vex.Flow.keySignature.accidentalList(keySpec.acc);
 
-  var acc_list = new Array();
+  var acc_list = [];
   for (var i = 0; i < keySpec.num; ++i) {
     var line = notes[i];
     acc_list.push({glyphCode: code, line: line});
   }
 
   return acc_list;
-}
+};
 
 Vex.Flow.keySignature.keySpecs = {
   "C": {acc: null, num: 0},
@@ -421,7 +434,7 @@ Vex.Flow.keySignature.accidentalList = function(acc) {
   }
   else if (acc == "#") {
     return [0, 1.5, -0.5, 1, 2.5, 0.5, 2]; }
-}
+};
 
 Vex.Flow.parseNoteDurationString = function(durationString) {
   if (typeof(durationString) !== "string") {
@@ -448,7 +461,7 @@ Vex.Flow.parseNoteDurationString = function(durationString) {
     dots: dots,
     type: type
   };
-}
+};
 
 Vex.Flow.parseNoteData = function(noteData) {
   var duration = noteData.duration;
@@ -506,7 +519,7 @@ Vex.Flow.parseNoteData = function(noteData) {
     dots: dots,
     ticks: ticks
   };
-}
+};
 
 Vex.Flow.durationToTicks = function(duration) {
   var alias = Vex.Flow.durationAliases[duration];
@@ -520,7 +533,7 @@ Vex.Flow.durationToTicks = function(duration) {
   }
 
   return ticks;
-}
+};
 
 Vex.Flow.durationToTicks.durations = {
   "1":    Vex.Flow.RESOLUTION / 1,
@@ -530,7 +543,8 @@ Vex.Flow.durationToTicks.durations = {
   "16":   Vex.Flow.RESOLUTION / 16,
   "32":   Vex.Flow.RESOLUTION / 32,
   "64":   Vex.Flow.RESOLUTION / 64,
-  "256":   Vex.Flow.RESOLUTION / 256
+  "128":  Vex.Flow.RESOLUTION / 128,
+  "256":  Vex.Flow.RESOLUTION / 256
 };
 
 Vex.Flow.durationAliases = {
@@ -543,7 +557,7 @@ Vex.Flow.durationAliases = {
   //
   // TODO(0xfe): This needs to be cleaned up.
   "b": "256"
-}
+};
 
 Vex.Flow.durationToGlyph = function(duration, type) {
   var alias = Vex.Flow.durationAliases[duration];
@@ -560,18 +574,18 @@ Vex.Flow.durationToGlyph = function(duration, type) {
     type = "n";
   }
 
-  glyphTypeProperties = code.type[type];
+  var glyphTypeProperties = code.type[type];
   if (glyphTypeProperties === undefined) {
     return null;
   }
 
   return Vex.Merge(Vex.Merge({}, code.common), glyphTypeProperties);
-}
+};
 
 Vex.Flow.durationToGlyph.duration_codes = {
   "1": {
     common: {
-      head_width: 16.5,
+      head_width: 15.5,
       stem: false,
       stem_offset: 0,
       flag: false,
@@ -606,7 +620,7 @@ Vex.Flow.durationToGlyph.duration_codes = {
   },
   "2": {
     common: {
-      head_width: 10.5,
+      head_width: 9.5,
       stem: true,
       stem_offset: 0,
       flag: false,
@@ -642,7 +656,7 @@ Vex.Flow.durationToGlyph.duration_codes = {
   },
   "4": {
     common: {
-      head_width: 10.5,
+      head_width: 9.5,
       stem: true,
       stem_offset: 0,
       flag: false,
@@ -680,7 +694,7 @@ Vex.Flow.durationToGlyph.duration_codes = {
   },
   "8": {
     common: {
-      head_width: 10.5,
+      head_width: 9.5,
       stem: true,
       stem_offset: 0,
       flag: true,
@@ -721,7 +735,7 @@ Vex.Flow.durationToGlyph.duration_codes = {
   "16": {
     common: {
       beam_count: 2,
-      head_width: 10.5,
+      head_width: 9.5,
       stem: true,
       stem_offset: 0,
       flag: true,
@@ -762,7 +776,7 @@ Vex.Flow.durationToGlyph.duration_codes = {
   "32": {
     common: {
       beam_count: 3,
-      head_width: 10.5,
+      head_width: 9.5,
       stem: true,
       stem_offset: 0,
       flag: true,
@@ -802,8 +816,8 @@ Vex.Flow.durationToGlyph.duration_codes = {
   },
   "64": {
     common: {
-      beam_count: 3,
-      head_width: 10.5,
+      beam_count: 4,
+      head_width: 9.5,
       stem: true,
       stem_offset: 0,
       flag: true,
@@ -840,6 +854,47 @@ Vex.Flow.durationToGlyph.duration_codes = {
         position: "B/4"
       }
     }
+  },
+  "128": {
+      common: {
+          beam_count: 5,
+          head_width: 9.5,
+          stem: true,
+          stem_offset:0,
+          flag: true,
+          code_flag_upstem: "v9b",
+          code_flag_downstem: "v30",
+          dot_shiftY: 0,
+          line_above: 0,
+          line_below: 0
+      },
+      type: {
+          "n": {  // Hundred-twenty-eight note
+              code_head: "vb"
+          },
+          "h": { // Hundred-twenty-eight harmonic
+              code_head: "v22"
+          },
+          "m": { // Hundred-twenty-eight muted
+              code_head: "v3e"
+          },
+          "r": {  // Hundred-twenty-eight rest
+              code_head: "vaa",
+              head_width: 20,
+              stem: false,
+              flag: false,
+              rest: true,
+              position: "B/4",
+              dot_shiftY: 1.5,
+              line_above: 2.0,
+              line_below: 3.0
+          },
+          "s": { // Hundred-twenty-eight rest
+              // Drawn with canvas primitives
+              head_width: 15,
+              position: "B/4"
+          }
+      }
   }
 };
 
@@ -849,3 +904,8 @@ Vex.Flow.TIME4_4 = {
   beat_value: 4,
   resolution: Vex.Flow.RESOLUTION
 };
+
+Vex.Flow.STEM_WIDTH = 1.5;
+Vex.Flow.STEM_HEIGHT = 35;
+Vex.Flow.STAVE_LINE_THICKNESS = 2;
+
